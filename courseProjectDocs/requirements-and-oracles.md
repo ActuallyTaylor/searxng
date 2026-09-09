@@ -20,6 +20,12 @@
 6. **FR-6:** The system shall send valid search requests to multiple selected engines and collect their responses in a shared result container.  
    **Source:** `searx/search/__init__.py`
 
+7. **FR-7:** The system shall pass searches to initialized client-side plugins before and after searching
+   **Source:** `searx/plugins/__init__.py`
+
+7. **FR-8:** The system shall pass every response from every search engine into initialized client-side plugins.
+   **Source:** `searx/plugins/__init__.py`
+
 ## Non-Functional Requirements
 
 1. **NFR-1:** The system shall protect user privacy by not tracking users.  
@@ -41,6 +47,9 @@
 | FR-4 | Support search parameters. | When a search query specifies values such as page number, safe search, time range, or language, those values should appear in the generated request parameters. |
 | FR-5 | Skip unsupported search conditions. | If a query requests page 2 from an engine that does not support paging, exceeds the engine's maximum page, or uses an unsupported time range, `get_params()` should return `None`. |
 | FR-6 | Send requests to multiple engines and collect results. | When several valid engine requests are created, each request should be executed and its output should update the shared result container. |
+| FR-7 | Send search requests to initialized plugins before and after sending to search engines. | When a search is performed, the search should first pass through `Plugin.pre_search`, then into the search engine, then into `Plugin.post_search`. |
+| FR-8 | Send each search result to initialized plugins. | When a search is completed, each search result should pass through a plugin with `Plugin.on_result` defined. |
+
 | NFR-1 | Users shall not be tracked. | Normal search operations should not rely on a persistent mechanism that tracks an individual user's searches. |
 | NFR-2 | Users shall not be profiled. | Search behavior should not depend on a persistent user profile created from previous search activity. |
 | NFR-3 | Manage search request timeouts. | If an engine takes longer than the calculated allowed timeout, it should be marked as unresponsive due to timeout rather than blocking the search indefinitely. |
